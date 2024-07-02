@@ -53,7 +53,7 @@ class NginxConfigLexer extends AbstractLexer implements LexerInterface
 
         if ($token?->nextToken) {
             // If the currently found token has a nextToken,
-            $this->context = $token;
+            $this->contexts[] = $this->context = $token;
         }
 
         if ($token) {
@@ -69,8 +69,15 @@ class NginxConfigLexer extends AbstractLexer implements LexerInterface
             return tap($this->context->nextToken ?? 0, fn () => $this->context = null);
         }
 
+
+        // So technically this is unknown territory. IDK why we would get here, but I
+        // know that we do, and I know what I would expect for at least one of the cases.
+        $lastContext =  end($this->contexts);
+        if ($lastContext) {
+            return $lastContext->nextToken ?? $lastContext->token ?? ord($value);
+        }
 //        throw new NginxSyntaxError('Unknown token: '. $value);
-        dd('lame', $token, $this->context, $value, $this->contexts);
+        dd('lame', $token, $this->context, $value, $e, $this->contexts);
     }
 
     public function yyerror(string $message): void

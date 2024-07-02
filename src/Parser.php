@@ -635,34 +635,6 @@ class Parser
 
 
 
-   private $yyDebugStream = STDERR;
-
-  /**
-   * The <tt>PrintStream</tt> on which the debugging output is printed.
-   */
-  public function getDebugStream() { return $this->yyDebugStream; }
-
-  /**
-   * Set the <tt>PrintStream</tt> on which the debug output is printed.
-   * @param s The stream that is used for debugging output.
-   */
-  public function setDebugStream($resource): void { $this->yyDebugStream = $resource; }
-
-  private int $yydebug = 0;
-
-  /**
-   * Answer the verbosity of the debugging output; 0 means that all kinds of
-   * output from the parser are suppressed.
-   */
-  public function getDebugLevel(): int { return $this->yydebug; }
-
-  /**
-   * Set the verbosity of the debugging output; 0 means that all kinds of
-   * output from the parser are suppressed.
-   * @param level The verbosity level for debugging output.
-   */
-  public function setDebugLevel(int $level): void { $this->yydebug = $level; }
-
 
   private int $yynerrs = 0;
 
@@ -680,17 +652,6 @@ class Parser
       $this->yylexer->yyerror($msg);
   }
 
-  protected function yycdebugNnl(string $message): void {
-    if (0 < $this->yydebug) {
-        fputs($this->yyDebugStream, $message);
-    }
-  }
-
-  protected function yycdebug(string $message): void {
-    if (0 < $this->yydebug) {
-      fputs($this->yyDebugStream, $message . PHP_EOL);
-    }
-  }
 
   /**
    * Returned by a Bison action in order to stop the parsing process and
@@ -784,377 +745,373 @@ class Parser
      /** @var mixed $yyval */
      $yyval = (0 < $yylen) ? $yystack->valueAt($yylen - 1) : $yystack->valueAt(0);
 
-    $this->yyReducePrint($yyn, $yystack);
-
     switch ($yyn)
       {
-          case 9: /* servers: servers server  */
-    /* "grammar.y":124  */
+          case 10: /* servers: servers server  */
+    /* "grammar.y":125  */
                  { $yyval[] = $yystack->valueAt(0); };
   break;
 
 
-  case 10: /* servers: server  */
-    /* "grammar.y":125  */
+  case 11: /* servers: server  */
+    /* "grammar.y":126  */
          { $yyval = [$yystack->valueAt(0)]; };
   break;
 
 
-  case 11: /* events: T_EVENTS '{' event_body_list '}'  */
-    /* "grammar.y":129  */
+  case 12: /* events: T_EVENTS '{' event_body_list '}'  */
+    /* "grammar.y":130  */
                                    { $yyval = new Node('T_EVENTS', [], $yystack->valueAt(2)); };
   break;
 
 
-  case 14: /* server_body: T_SERVER_NAME server_name_values ';'  */
-    /* "grammar.y":136  */
+  case 16: /* server_body: T_SERVER_NAME server_name_values ';'  */
+    /* "grammar.y":138  */
                                         { $yyval = new Node('T_SERVER_NAME', ['names' => $yystack->valueAt(1)]); };
   break;
 
 
-  case 15: /* server_body: T_SERVER_ROOT T_SERVER_ROOT_PATH ';'  */
-    /* "grammar.y":137  */
+  case 17: /* server_body: T_SERVER_ROOT T_SERVER_ROOT_PATH ';'  */
+    /* "grammar.y":139  */
                                         { $yyval = new Node('T_SERVER_ROOT', ['path' => $yystack->valueAt(1)]); };
   break;
 
 
-  case 17: /* server_body: T_LOCATION location_optional_regexp_path T_LOCATION_PATH '{' location_body_list '}'  */
-    /* "grammar.y":139  */
+  case 19: /* server_body: T_LOCATION location_optional_regexp_path T_LOCATION_PATH '{' location_body_list '}'  */
+    /* "grammar.y":141  */
                                                                                       { $yyval = new  Node('T_LOCATION', ['regexp' => $yystack->valueAt(4), 'path' => $yystack->valueAt(3)], $yystack->valueAt(1)); };
   break;
 
 
-  case 18: /* server_body: T_LOCATION T_LOCATION_PATH_EQUAL T_LOCATION_PATH '{' location_body_list '}'  */
-    /* "grammar.y":140  */
+  case 20: /* server_body: T_LOCATION T_LOCATION_PATH_EQUAL T_LOCATION_PATH '{' location_body_list '}'  */
+    /* "grammar.y":142  */
                                                                               { $yyval = new  Node('T_LOCATION', ['regexp' => $yystack->valueAt(4), 'path' => $yystack->valueAt(3)], $yystack->valueAt(1)); };
   break;
 
 
-  case 30: /* location_body: T_RETURN T_RETURN_CODE optional_return_body ';'  */
-    /* "grammar.y":155  */
+  case 32: /* location_body: T_RETURN T_RETURN_CODE optional_return_body ';'  */
+    /* "grammar.y":157  */
                                                                    { $yyval = new Node('T_RETURN', ['code' => $yystack->valueAt(2), 'body' => $yystack->valueAt(1)]); };
   break;
 
 
-  case 31: /* location_body: T_FAST_CGI_PATH T_FAST_CGI_PATH_PATH ';'  */
-    /* "grammar.y":156  */
+  case 33: /* location_body: T_FAST_CGI_PATH T_FAST_CGI_PATH_PATH ';'  */
+    /* "grammar.y":158  */
                                                                    { $yyval = new Node('T_FAST_CGI_PATH', ['path' => $yystack->valueAt(1)]); };
   break;
 
 
-  case 32: /* location_body: T_FAST_CGI_SPLIT_PATH_INFO T_FAST_CGI_SPLIT_PATH_INFO_PATH ';'  */
-    /* "grammar.y":157  */
+  case 34: /* location_body: T_FAST_CGI_SPLIT_PATH_INFO T_FAST_CGI_SPLIT_PATH_INFO_PATH ';'  */
+    /* "grammar.y":159  */
                                                                    { $yyval = new Node('T_FAST_CGI_SPLIT_PATH_INFO', ['path' => $yystack->valueAt(1)]); };
   break;
 
 
-  case 33: /* location_body: T_FAST_CGI_PARAM T_FAST_CGI_PARAM_KEY T_FAST_CGI_PARAM_VALUE ';'  */
-    /* "grammar.y":158  */
+  case 35: /* location_body: T_FAST_CGI_PARAM T_FAST_CGI_PARAM_KEY T_FAST_CGI_PARAM_VALUE ';'  */
+    /* "grammar.y":160  */
                                                                    { $yyval = new Node('T_FAST_CGI_PARAM', [$yystack->valueAt(2) => $yystack->valueAt(1)]); };
   break;
 
 
-  case 34: /* location_body: T_INCLUDE T_INCLUDE_PATH ';'  */
-    /* "grammar.y":159  */
+  case 36: /* location_body: T_INCLUDE T_INCLUDE_PATH ';'  */
+    /* "grammar.y":161  */
                                                                    { $yyval = new Node('T_INCLUDE', ['path' => $yystack->valueAt(1)]); };
   break;
 
 
-  case 35: /* location_body: T_INTERNAL ';'  */
-    /* "grammar.y":160  */
+  case 37: /* location_body: T_INTERNAL ';'  */
+    /* "grammar.y":162  */
                                                                    { $yyval = new Node('T_INTERNAL'); };
   break;
 
 
-  case 36: /* location_body: T_TRY_FILES try_files_path_list ';'  */
-    /* "grammar.y":161  */
+  case 38: /* location_body: T_TRY_FILES try_files_path_list ';'  */
+    /* "grammar.y":163  */
                                                                    { $yyval = new Node('T_TRY_FILES', [ 'paths' => $yystack->valueAt(1) ]); };
   break;
 
 
-  case 57: /* worker_processes: T_WORKER_PROCESSES T_WORKER_PROCESSES_VALUE ';'  */
-    /* "grammar.y":189  */
+  case 59: /* worker_processes: T_WORKER_PROCESSES T_WORKER_PROCESSES_VALUE ';'  */
+    /* "grammar.y":191  */
                                                   { $yyval = new Node('T_WORKER_PROCESSES', ['value' => $yystack->valueAt(1)]); };
   break;
 
 
-  case 58: /* http: T_HTTP '{' http_body '}'  */
-    /* "grammar.y":193  */
+  case 60: /* http: T_HTTP '{' http_body '}'  */
+    /* "grammar.y":195  */
                            { $yyval = new Node('T_HTTP', [], $yystack->valueAt(2)); };
   break;
 
 
-  case 59: /* worker_connections: T_WORKER_CONNECTIONS T_WORKER_CONNECTIONS_VALUE ';'  */
-    /* "grammar.y":196  */
+  case 61: /* worker_connections: T_WORKER_CONNECTIONS T_WORKER_CONNECTIONS_VALUE ';'  */
+    /* "grammar.y":198  */
                                                        { $yyval = new Node('T_WORKER_CONNECTIONS', ['value' => $yystack->valueAt(1)]); };
   break;
 
 
-  case 60: /* tcp_nopush: T_TCP_NOPUSH T_TCP_NOPUSH_VALUE ';'  */
-    /* "grammar.y":199  */
+  case 62: /* tcp_nopush: T_TCP_NOPUSH T_TCP_NOPUSH_VALUE ';'  */
+    /* "grammar.y":201  */
                                       { $yyval = new Node('T_TCP_NOPUSH', ['value' => $yystack->valueAt(1)]); };
   break;
 
 
-  case 61: /* server: T_SERVER '{' server_body_list '}'  */
-    /* "grammar.y":203  */
+  case 63: /* server: T_SERVER '{' server_body_list '}'  */
+    /* "grammar.y":205  */
                                     { static::setAst(new Node('T_SERVER', [], $yystack->valueAt(2))); };
   break;
 
 
-  case 62: /* pid: T_PID T_PID_VALUE ';'  */
-    /* "grammar.y":206  */
+  case 64: /* pid: T_PID T_PID_VALUE ';'  */
+    /* "grammar.y":208  */
                         { $yyval = new Node('T_PID', ['value' => $yystack->valueAt(1)]); };
   break;
 
 
-  case 63: /* rewrite: T_REWRITE T_REWRITE_REGEX T_REWRITE_REPLACEMENT T_REWRITE_FLAG ';'  */
-    /* "grammar.y":209  */
+  case 65: /* rewrite: T_REWRITE T_REWRITE_REGEX T_REWRITE_REPLACEMENT T_REWRITE_FLAG ';'  */
+    /* "grammar.y":211  */
                                                                      { $yyval = new Node('T_REWRITE', ['regex' => $yystack->valueAt(3), 'replacement' => $yystack->valueAt(2), 'flag' => $yystack->valueAt(1)]); };
   break;
 
 
-  case 64: /* deny: T_DENY T_DENY_VALUE ';'  */
-    /* "grammar.y":212  */
+  case 66: /* deny: T_DENY T_DENY_VALUE ';'  */
+    /* "grammar.y":214  */
                           { $yyval = new Node('T_DENY', ['value' => $yystack->valueAt(1)]); };
   break;
 
 
-  case 65: /* hide_header: T_FAST_CGI_HIDE_HEADER T_FAST_CGI_HIDE_HEADER_KEY ';'  */
-    /* "grammar.y":215  */
+  case 67: /* hide_header: T_FAST_CGI_HIDE_HEADER T_FAST_CGI_HIDE_HEADER_KEY ';'  */
+    /* "grammar.y":217  */
                                                           { $yyval = new Node('T_FAST_CGI_HIDE_HEADER', ['key' => $yystack->valueAt(1)]); };
   break;
 
 
-  case 66: /* gzip: T_GZIP T_GZIP_VALUE ';'  */
-    /* "grammar.y":218  */
+  case 68: /* gzip: T_GZIP T_GZIP_VALUE ';'  */
+    /* "grammar.y":220  */
                           { $yyval = new Node('T_GZIP', ['value' => $yystack->valueAt(1)]); };
   break;
 
 
-  case 67: /* sendfile: T_SENDFILE T_SENDFILE_VALUE ';'  */
-    /* "grammar.y":221  */
+  case 69: /* sendfile: T_SENDFILE T_SENDFILE_VALUE ';'  */
+    /* "grammar.y":223  */
                                   { $yyval = new Node('T_SENDFILE', ['value' => $yystack->valueAt(1)]); };
   break;
 
 
-  case 68: /* types_hash: T_TYPES_HASH T_TYPES_HASH_VALUE ';'  */
-    /* "grammar.y":224  */
+  case 70: /* types_hash: T_TYPES_HASH T_TYPES_HASH_VALUE ';'  */
+    /* "grammar.y":226  */
                                       { $yyval = new Node('T_TYPES_HASH', ['value' => $yystack->valueAt(1)]); };
   break;
 
 
-  case 69: /* server_tokens: T_SERVER_TOKENS T_SERVER_TOKENS_VALUE ';'  */
-    /* "grammar.y":227  */
+  case 71: /* server_tokens: T_SERVER_TOKENS T_SERVER_TOKENS_VALUE ';'  */
+    /* "grammar.y":229  */
                                             { $yyval = new Node('T_SERVER_TOKENS', ['value' => $yystack->valueAt(1)]); };
   break;
 
 
-  case 70: /* server_names_hash_bucket_size: T_SERVER_NAMES_HASH_BUCKET_SIZE T_SERVER_NAMES_HASH_BUCKET_SIZE_VALUE ';'  */
-    /* "grammar.y":230  */
+  case 72: /* server_names_hash_bucket_size: T_SERVER_NAMES_HASH_BUCKET_SIZE T_SERVER_NAMES_HASH_BUCKET_SIZE_VALUE ';'  */
+    /* "grammar.y":232  */
                                                                             { $yyval = new Node('T_SERVER_NAMES_HASH_BUCKET_SIZE', ['value' => $yystack->valueAt(1)]); };
   break;
 
 
-  case 71: /* ssl_protocols: T_SSL_PROTOCOLS T_SSL_PROTOCOLS_VALUE ';'  */
-    /* "grammar.y":233  */
+  case 73: /* ssl_protocols: T_SSL_PROTOCOLS T_SSL_PROTOCOLS_VALUE ';'  */
+    /* "grammar.y":235  */
                                             { $yyval = new Node('T_SSL_PROTOCOLS', ['value' => $yystack->valueAt(1)]); };
   break;
 
 
-  case 72: /* ssl_protocols: T_SSL_PROTOCOLS T_SSL_PROTOCOLS_VALUE T_SSL_PROTOCOLS_VALUE2 ';'  */
-    /* "grammar.y":234  */
+  case 74: /* ssl_protocols: T_SSL_PROTOCOLS T_SSL_PROTOCOLS_VALUE T_SSL_PROTOCOLS_VALUE2 ';'  */
+    /* "grammar.y":236  */
                                                                    { $yyval = new Node('T_SSL_PROTOCOLS', ['value' => [$yystack->valueAt(2), $yystack->valueAt(1)]]); };
   break;
 
 
-  case 73: /* ssl_protocols: T_SSL_PROTOCOLS T_SSL_PROTOCOLS_VALUE T_SSL_PROTOCOLS_VALUE2 T_SSL_PROTOCOLS_VALUE3 ';'  */
-    /* "grammar.y":235  */
+  case 75: /* ssl_protocols: T_SSL_PROTOCOLS T_SSL_PROTOCOLS_VALUE T_SSL_PROTOCOLS_VALUE2 T_SSL_PROTOCOLS_VALUE3 ';'  */
+    /* "grammar.y":237  */
                                                                                           { $yyval = new Node('T_SSL_PROTOCOLS', ['value' => [$yystack->valueAt(3), $yystack->valueAt(2), $yystack->valueAt(1)]]); };
   break;
 
 
-  case 74: /* ssl_protocols: T_SSL_PROTOCOLS T_SSL_PROTOCOLS_VALUE T_SSL_PROTOCOLS_VALUE2 T_SSL_PROTOCOLS_VALUE3 T_SSL_PROTOCOLS_VALUE4 ';'  */
-    /* "grammar.y":236  */
+  case 76: /* ssl_protocols: T_SSL_PROTOCOLS T_SSL_PROTOCOLS_VALUE T_SSL_PROTOCOLS_VALUE2 T_SSL_PROTOCOLS_VALUE3 T_SSL_PROTOCOLS_VALUE4 ';'  */
+    /* "grammar.y":238  */
                                                                                                                  { $yyval = new Node('T_SSL_PROTOCOLS', ['value' => [$yystack->valueAt(4), $yystack->valueAt(3), $yystack->valueAt(2), $yystack->valueAt(1)]]); };
   break;
 
 
-  case 75: /* ssl_prefer_server_ciphers: T_SSL_PREFER_SERVER_CIPHERS T_SSL_PREFER_SERVER_CIPHERS_VALUE ';'  */
-    /* "grammar.y":239  */
+  case 77: /* ssl_prefer_server_ciphers: T_SSL_PREFER_SERVER_CIPHERS T_SSL_PREFER_SERVER_CIPHERS_VALUE ';'  */
+    /* "grammar.y":241  */
                                                                      { $yyval = new Node('T_SSL_PREFER_SERVER_CIPHERS', ['value' => [$yystack->valueAt(1)]]); };
   break;
 
 
-  case 76: /* default_type: T_DEFAULT_TYPE T_DEFAULT_TYPE_VALUE ';'  */
-    /* "grammar.y":243  */
+  case 78: /* default_type: T_DEFAULT_TYPE T_DEFAULT_TYPE_VALUE ';'  */
+    /* "grammar.y":245  */
                                           { $yyval = new Node('T_DEFAULT_TYPE', ['value' => $yystack->valueAt(1)]); };
   break;
 
 
-  case 77: /* listen: T_LISTEN T_LISTEN_VALUE ';'  */
-    /* "grammar.y":247  */
+  case 79: /* listen: T_LISTEN T_LISTEN_VALUE ';'  */
+    /* "grammar.y":249  */
                               { $yyval = new Node('T_LISTEN', ['value' => $yystack->valueAt(1)]); };
   break;
 
 
-  case 78: /* listen: T_LISTEN T_LISTEN_VALUE T_LISTEN_VALUE_DEFAULT ';'  */
-    /* "grammar.y":248  */
+  case 80: /* listen: T_LISTEN T_LISTEN_VALUE T_LISTEN_VALUE_DEFAULT ';'  */
+    /* "grammar.y":250  */
                                                      { $yyval = new Node('T_LISTEN', ['value' => $yystack->valueAt(2), 'default_server' => true]); };
   break;
 
 
-  case 79: /* server_name_values: T_SERVER_NAME_VALUE  */
-    /* "grammar.y":251  */
+  case 81: /* server_name_values: T_SERVER_NAME_VALUE  */
+    /* "grammar.y":253  */
                                           { $yyval = [$yystack->valueAt(0)]; };
   break;
 
 
-  case 80: /* server_name_values: server_name_values T_SERVER_NAME_VALUE  */
-    /* "grammar.y":252  */
+  case 82: /* server_name_values: server_name_values T_SERVER_NAME_VALUE  */
+    /* "grammar.y":254  */
                                           { $yyval = $yystack->valueAt(1); $yyval[] = $yystack->valueAt(0); };
   break;
 
 
-  case 81: /* error_log: T_ERROR_LOG T_ERROR_LOG_PATH ';'  */
-    /* "grammar.y":255  */
+  case 83: /* error_log: T_ERROR_LOG T_ERROR_LOG_PATH ';'  */
+    /* "grammar.y":257  */
                                         { $yyval = new Node('T_ERROR_LOG', ['path' => $yystack->valueAt(1)]); };
   break;
 
 
-  case 82: /* user: T_USER T_USER_VALUE ';'  */
-    /* "grammar.y":258  */
+  case 84: /* user: T_USER T_USER_VALUE ';'  */
+    /* "grammar.y":260  */
                           { $yyval = new Node('T_USER', ['value' => $yystack->valueAt(1)]); };
   break;
 
 
-  case 83: /* group: T_GROUP T_GROUP_VALUE ';'  */
-    /* "grammar.y":261  */
+  case 85: /* group: T_GROUP T_GROUP_VALUE ';'  */
+    /* "grammar.y":263  */
                             { $yyval = new Node('T_GROUP', ['value' => $yystack->valueAt(1)]); };
   break;
 
 
-  case 84: /* location_optional_regexp_path: %empty  */
-    /* "grammar.y":264  */
+  case 86: /* location_optional_regexp_path: %empty  */
+    /* "grammar.y":266  */
            { $yyval = ''; };
   break;
 
 
-  case 85: /* location_optional_regexp_path: T_LOCATION_PATH_REGEXP  */
-    /* "grammar.y":265  */
+  case 87: /* location_optional_regexp_path: T_LOCATION_PATH_REGEXP  */
+    /* "grammar.y":267  */
                             { $yyval = $yystack->valueAt(0); };
   break;
 
 
-  case 86: /* add_header: T_ADD_HEADER T_ADD_HEADER_KEY T_ADD_HEADER_VALUE ';'  */
-    /* "grammar.y":268  */
+  case 88: /* add_header: T_ADD_HEADER T_ADD_HEADER_KEY T_ADD_HEADER_VALUE ';'  */
+    /* "grammar.y":270  */
                                                        { $yyval = new Node('T_ADD_HEADER', [$yystack->valueAt(2) => $yystack->valueAt(1)]); };
   break;
 
 
-  case 87: /* index: T_INDEX T_INDEX_VALUE ';'  */
-    /* "grammar.y":271  */
+  case 89: /* index: T_INDEX T_INDEX_VALUE ';'  */
+    /* "grammar.y":273  */
                             { $yyval = new Node('T_INDEX', ['value' => $yystack->valueAt(1)]); };
   break;
 
 
-  case 88: /* access_log: T_ACCESS_LOG T_ACCESS_LOG_PATH ';'  */
-    /* "grammar.y":274  */
+  case 90: /* access_log: T_ACCESS_LOG T_ACCESS_LOG_PATH ';'  */
+    /* "grammar.y":276  */
                                      { $yyval = new Node('T_ACCESS_LOG', ['path' => $yystack->valueAt(1)]); };
   break;
 
 
-  case 89: /* log_not_found: T_LOG_NOT_FOUND T_LOG_NOT_FOUND_VALUE ';'  */
-    /* "grammar.y":277  */
+  case 91: /* log_not_found: T_LOG_NOT_FOUND T_LOG_NOT_FOUND_VALUE ';'  */
+    /* "grammar.y":279  */
                                             { $yyval = new Node('T_LOG_NOT_FOUND', ['value' => $yystack->valueAt(1)]); };
   break;
 
 
-  case 90: /* charset: T_CHARSET T_CHARSET_VALUE ';'  */
-    /* "grammar.y":280  */
+  case 92: /* charset: T_CHARSET T_CHARSET_VALUE ';'  */
+    /* "grammar.y":282  */
                                 { $yyval = new Node('T_CHARSET', ['value' => $yystack->valueAt(1)]); };
   break;
 
 
-  case 91: /* error_page: T_ERROR_PAGE T_ERROR_PAGE_CODE T_ERROR_PAGE_URI ';'  */
-    /* "grammar.y":283  */
+  case 93: /* error_page: T_ERROR_PAGE T_ERROR_PAGE_CODE T_ERROR_PAGE_URI ';'  */
+    /* "grammar.y":285  */
                                                       { $yyval = new Node('T_ERROR_PAGE', ['code' => $yystack->valueAt(2), 'uri' => $yystack->valueAt(1)]); };
   break;
 
 
-  case 92: /* include: T_INCLUDE T_INCLUDE_PATH ';'  */
-    /* "grammar.y":286  */
+  case 94: /* include: T_INCLUDE T_INCLUDE_PATH ';'  */
+    /* "grammar.y":288  */
                                { $yyval = new Node('T_INCLUDE', ['path' => $yystack->valueAt(1)]); };
   break;
 
 
-  case 93: /* return: T_RETURN T_RETURN_CODE optional_return_body ';'  */
-    /* "grammar.y":289  */
+  case 95: /* return: T_RETURN T_RETURN_CODE optional_return_body ';'  */
+    /* "grammar.y":291  */
                                                   { $yyval = new Node('T_RETURN', ['code' => $yystack->valueAt(2), 'body' => $yystack->valueAt(1)]); };
   break;
 
 
-  case 94: /* multi_accept: T_MULTI_ACCEPT T_MULTI_ACCEPT_VALUE ';'  */
-    /* "grammar.y":293  */
+  case 96: /* multi_accept: T_MULTI_ACCEPT T_MULTI_ACCEPT_VALUE ';'  */
+    /* "grammar.y":295  */
                                           { $yyval = new Node('T_MULTI_ACCEPT', ['value' => $yystack->valueAt(1)]); };
   break;
 
 
-  case 95: /* server_body_list: server_body_list server_body  */
-    /* "grammar.y":296  */
+  case 97: /* server_body_list: server_body_list server_body  */
+    /* "grammar.y":298  */
                                 { $yyval[] = $yystack->valueAt(0); };
   break;
 
 
-  case 96: /* server_body_list: %empty  */
-    /* "grammar.y":297  */
+  case 98: /* server_body_list: %empty  */
+    /* "grammar.y":299  */
                                 { $yyval = []; };
   break;
 
 
-  case 97: /* optional_return_body: %empty  */
-    /* "grammar.y":302  */
+  case 99: /* optional_return_body: %empty  */
+    /* "grammar.y":304  */
                  { $yyval = '';};
   break;
 
 
-  case 98: /* optional_return_body: T_RETURN_BODY  */
-    /* "grammar.y":303  */
+  case 100: /* optional_return_body: T_RETURN_BODY  */
+    /* "grammar.y":305  */
                  { $yyval = $yystack->valueAt(0); };
   break;
 
 
-  case 99: /* try_files_path_list: T_TRY_FILES_PATH  */
-    /* "grammar.y":307  */
+  case 101: /* try_files_path_list: T_TRY_FILES_PATH  */
+    /* "grammar.y":309  */
                                         { $yyval = [$yystack->valueAt(0)]; };
   break;
 
 
-  case 100: /* try_files_path_list: try_files_path_list T_TRY_FILES_PATH  */
-    /* "grammar.y":308  */
+  case 102: /* try_files_path_list: try_files_path_list T_TRY_FILES_PATH  */
+    /* "grammar.y":310  */
                                         { $yyval = $yystack->valueAt(1); $yyval[] = $yystack->valueAt(0); };
   break;
 
 
-  case 101: /* location_body_list: location_body_list location_body  */
-    /* "grammar.y":312  */
+  case 103: /* location_body_list: location_body_list location_body  */
+    /* "grammar.y":314  */
                                     { $yyval[] = $yystack->valueAt(0); };
   break;
 
 
-  case 102: /* location_body_list: %empty  */
-    /* "grammar.y":313  */
+  case 104: /* location_body_list: %empty  */
+    /* "grammar.y":315  */
                                     { $yyval = []; };
   break;
 
 
 
-/* "src/Parser.php":1153  */
+/* "src/Parser.php":1112  */
 
         default: break;
       }
-
-    $this->yySymbolPrint("-> $$ =", new SymbolKind($this->yyr1[$yyn]), $yyval);
 
     $yystack->pop($yylen);
     $yylen = 0;
@@ -1165,37 +1122,6 @@ class Parser
   }
 
 
-  /*--------------------------------.
-  | Print this symbol on YYOUTPUT.  |
-  `--------------------------------*/
-  /**
-   * @param mixed $yyvalue
-   */
-  private function yySymbolPrint(string $s, SymbolKind $yykind, $yyvalue): void {
-      if (0 < $this->yydebug) {
-          switch(true) {
-              case is_array($yyvalue):
-                  $value = sprintf('array(%d)', count($yyvalue));
-                  break;
-              case is_null($yyvalue):
-                  $value = 'null';
-                  break;
-              case is_object($yyvalue):
-                  if(method_exists($yyvalue, '__toString')) {
-                      $value = (string)$yyvalue;
-                  } else {
-                      $value = get_class($yyvalue);
-                  }
-                  break;
-              default:
-                  $value = (string)$yyvalue;
-          }
-          $this->yycdebug($s
-                   . ($yykind->getCode() < Parser::YYNTOKENS ? " token " : " nterm ")
-                   . $yykind->getName() . " ("
-                   . $value . ")");
-      }
-  }
 
 
   /**
@@ -1212,7 +1138,6 @@ class Parser
 
 
 
-    $this->yycdebug("Starting parse");
     $this->yyerrstatus = 0;
     $this->yynerrs = 0;
 
@@ -1227,10 +1152,6 @@ class Parser
         /* New state.  Unlike in the C/C++ skeletons, the state is already
            pushed when we come here.  */
       case Parser::YYNEWSTATE:
-        $this->yycdebug("Entering state " . $this->yystate);
-        if (0 < $this->yydebug) {
-           $this->yystack->print($this->getDebugStream());
-        }
 
         /* Accept?  */
         if ($this->yystate === Parser::YYFINAL) {
@@ -1249,7 +1170,6 @@ class Parser
         if ($this->yychar === Parser::YYEMPTY)
           {
 
-            $this->yycdebug ("Reading a token");
             $this->yychar = $this->yylexer->yylex();
             $this->yylval = $this->yylexer->getLVal();
 
@@ -1257,8 +1177,6 @@ class Parser
 
         /* Convert token to internal form.  */
         $this->yytoken = $this->yytranslate($this->yychar);
-        $this->yySymbolPrint("Next token is", $this->yytoken,
-                      $this->yylval);
 
         if ($this->yytoken->getCode() === SymbolKind::S_YYerror)
           {
@@ -1293,8 +1211,6 @@ class Parser
             else
               {
                 /* Shift the lookahead token.  */
-                $this->yySymbolPrint("Shifting", $this->yytoken, $this->yylval);
-
                 /* Discard the token being shifted.  */
                 $this->yychar = Parser::YYEMPTY;
 
@@ -1408,8 +1324,6 @@ class Parser
 
             $this->yystack->pop();
             $this->yystate = $this->yystack->stateAt(0);
-            if (0 < $this->yydebug)
-              $this->yystack->print($this->getDebugStream());
           }
 
         if ($this->label === Parser::YYABORT)
@@ -1419,8 +1333,6 @@ class Parser
 
 
         /* Shift the error token.  */
-        $this->yySymbolPrint("Shifting", new SymbolKind($this->yystos[$this->yyn]),
-                      $this->yylval);
 
         $this->yystate = $this->yyn;
         $this->yystack->push($this->yyn, $this->yylval);
@@ -1505,27 +1417,27 @@ class Parser
    means the default is an error.  */
   
   /** @var int[] */
-  public array $yydefact = array(     0,     0,     0,     0,     0,     0,     0,     0,     0,     3,
-       8,     6,     4,    10,     7,     2,     5,    96,     0,     0,
-       0,     0,     0,    43,     1,     9,     0,    82,    83,    57,
-      62,     0,     0,     0,    12,    13,     0,     0,     0,     0,
-       0,     0,     0,     0,     0,     0,     0,     0,    44,     0,
-      55,    53,    45,    46,    47,    48,    49,    50,    56,    52,
-      51,    54,     0,     0,     0,    84,     0,     0,     0,     0,
-       0,     0,     0,     0,    61,    95,    27,    24,    19,    16,
-      20,    21,    29,    28,    22,    23,    25,    26,     0,     0,
-      11,     0,     0,     0,     0,     0,     0,     0,     0,     0,
-       0,     0,     0,    58,     0,    79,     0,     0,    85,     0,
-       0,    97,     0,     0,     0,     0,     0,     0,     0,    94,
-      59,    81,    88,    92,    66,    67,    68,    69,    70,     0,
-      71,    75,    60,    76,     0,    77,    80,    14,    15,     0,
-       0,    98,     0,     0,     0,    87,    90,     0,    64,    89,
-       0,    72,    78,   102,   102,    93,     0,    86,    91,     0,
-      73,     0,     0,    63,    74,     0,     0,     0,     0,     0,
-       0,     0,     0,    18,   101,    37,    38,    39,    41,    42,
-      40,    17,    97,     0,     0,     0,     0,     0,    35,    99,
-       0,     0,    31,    32,     0,    65,    34,   100,    36,    30,
-      33);
+  public array $yydefact = array(     9,     0,     0,     0,     0,     0,     0,     0,     0,     3,
+       8,     6,     4,    11,     7,     2,     5,    98,     0,     0,
+       0,     0,    15,    45,     1,    10,     0,    84,    85,    59,
+      64,     0,     0,     0,    13,    14,     0,     0,     0,     0,
+       0,     0,     0,     0,     0,     0,     0,     0,    46,     0,
+      57,    55,    47,    48,    49,    50,    51,    52,    58,    54,
+      53,    56,     0,     0,     0,    86,     0,     0,     0,     0,
+       0,     0,     0,     0,    63,    97,    29,    26,    21,    18,
+      22,    23,    31,    30,    24,    25,    27,    28,     0,     0,
+      12,     0,     0,     0,     0,     0,     0,     0,     0,     0,
+       0,     0,     0,    60,     0,    81,     0,     0,    87,     0,
+       0,    99,     0,     0,     0,     0,     0,     0,     0,    96,
+      61,    83,    90,    94,    68,    69,    70,    71,    72,     0,
+      73,    77,    62,    78,     0,    79,    82,    16,    17,     0,
+       0,   100,     0,     0,     0,    89,    92,     0,    66,    91,
+       0,    74,    80,   104,   104,    95,     0,    88,    93,     0,
+      75,     0,     0,    65,    76,     0,     0,     0,     0,     0,
+       0,     0,     0,    20,   103,    39,    40,    41,    43,    44,
+      42,    19,    99,     0,     0,     0,     0,     0,    37,   101,
+       0,     0,    33,    34,     0,    67,    36,   102,    38,    32,
+      35);
   
 
 /* YYPGOTO[NTERM-NUM].  */
@@ -1629,72 +1541,37 @@ class Parser
 /* YYR1[RULE-NUM] -- Symbol kind of the left-hand side of rule RULE-NUM.  */
   
   /** @var int[] */
-  public array $yyr1 = array(     0,    94,    95,    95,    95,    95,    95,    95,    95,    96,
-      96,    97,    98,    98,    99,    99,    99,    99,    99,    99,
+  public array $yyr1 = array(     0,    94,    95,    95,    95,    95,    95,    95,    95,    95,
+      96,    96,    97,    98,    98,    98,    99,    99,    99,    99,
       99,    99,    99,    99,    99,    99,    99,    99,    99,    99,
-     100,   100,   100,   100,   100,   100,   100,   100,   100,   100,
-     100,   100,   100,   101,   101,   101,   101,   101,   101,   101,
-     101,   101,   101,   101,   101,   101,   101,   102,   103,   104,
-     105,   106,   107,   108,   109,   110,   111,   112,   113,   114,
-     115,   116,   116,   116,   116,   117,   118,   119,   119,   120,
-     120,   121,   122,   123,   124,   124,   125,   126,   127,   128,
-     129,   130,   131,   132,   133,   134,   134,   135,   135,   136,
-     136,   137,   137);
+      99,    99,   100,   100,   100,   100,   100,   100,   100,   100,
+     100,   100,   100,   100,   100,   101,   101,   101,   101,   101,
+     101,   101,   101,   101,   101,   101,   101,   101,   101,   102,
+     103,   104,   105,   106,   107,   108,   109,   110,   111,   112,
+     113,   114,   115,   116,   116,   116,   116,   117,   118,   119,
+     119,   120,   120,   121,   122,   123,   124,   124,   125,   126,
+     127,   128,   129,   130,   131,   132,   133,   134,   134,   135,
+     135,   136,   136,   137,   137);
   
 
 /* YYR2[RULE-NUM] -- Number of symbols on the right-hand side of rule RULE-NUM.  */
   
   /** @var int[] */
-  public array $yyr2 = array(     0,     2,     1,     1,     1,     1,     1,     1,     1,     2,
-       1,     4,     1,     1,     3,     3,     1,     6,     6,     1,
-       1,     1,     1,     1,     1,     1,     1,     1,     1,     1,
-       4,     3,     3,     4,     3,     2,     3,     1,     1,     1,
-       1,     1,     1,     0,     1,     1,     1,     1,     1,     1,
-       1,     1,     1,     1,     1,     1,     1,     3,     4,     3,
-       3,     4,     3,     5,     3,     3,     3,     3,     3,     3,
-       3,     3,     4,     5,     6,     3,     3,     3,     4,     1,
-       2,     3,     3,     3,     0,     1,     4,     3,     3,     3,
-       3,     4,     3,     4,     3,     2,     0,     0,     1,     1,
-       2,     2,     0);
+  public array $yyr2 = array(     0,     2,     1,     1,     1,     1,     1,     1,     1,     0,
+       2,     1,     4,     1,     1,     0,     3,     3,     1,     6,
+       6,     1,     1,     1,     1,     1,     1,     1,     1,     1,
+       1,     1,     4,     3,     3,     4,     3,     2,     3,     1,
+       1,     1,     1,     1,     1,     0,     1,     1,     1,     1,
+       1,     1,     1,     1,     1,     1,     1,     1,     1,     3,
+       4,     3,     3,     4,     3,     5,     3,     3,     3,     3,
+       3,     3,     3,     3,     4,     5,     6,     3,     3,     3,
+       4,     1,     2,     3,     3,     3,     0,     1,     4,     3,
+       3,     3,     3,     4,     3,     4,     3,     2,     0,     0,
+       1,     1,     2,     2,     0);
   
 
 
 
-  /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
-  
-  /** @var int[] */
-  public array $yyrline = array(     0,   114,   114,   115,   116,   117,   118,   119,   120,   124,
-     125,   129,   132,   133,   136,   137,   138,   139,   140,   141,
-     142,   143,   144,   145,   146,   147,   148,   149,   150,   151,
-     155,   156,   157,   158,   159,   160,   161,   162,   163,   164,
-     165,   166,   167,   171,   172,   173,   174,   175,   176,   177,
-     178,   179,   180,   181,   182,   183,   184,   189,   193,   196,
-     199,   203,   206,   209,   212,   215,   218,   221,   224,   227,
-     230,   233,   234,   235,   236,   239,   243,   247,   248,   251,
-     252,   255,   258,   261,   264,   265,   268,   271,   274,   277,
-     280,   283,   286,   289,   293,   296,   297,   302,   303,   307,
-     308,   312,   313);
-  
-
-
-  // Report on the debug stream that the rule yyrule is going to be reduced.
-  private function yyReducePrint(int $yyrule, YYStack $yystack): void
-  {
-    if ($this->yydebug === 0)
-      return;
-
-    $yylno = $this->yyrline[$yyrule];
-    $yynrhs = $this->yyr2[$yyrule];
-    /* Print the symbols being reduced, and their result.  */
-    $this->yycdebug("Reducing stack by rule " . ($yyrule - 1)
-              . " (line " . $yylno . "):");
-
-    /* The symbols being reduced.  */
-    for ($yyi = 0; $yyi < $yynrhs; $yyi++)
-      $this->yySymbolPrint("   $" . ($yyi + 1) . " =",
-                    new SymbolKind($this->yystos[$yystack->stateAt($yynrhs - ($yyi + 1))]),
-                    $yystack->valueAt(($yynrhs) - ($yyi + 1)));
-  }
 
   /* YYTRANSLATE(TOKEN-NUM) -- Symbol number corresponding to TOKEN-NUM
      as returned by yylex, with out-of-bounds checking.  */
@@ -1756,5 +1633,5 @@ class Parser
 
 
 }
-/* "grammar.y":315  */
+/* "grammar.y":317  */
 

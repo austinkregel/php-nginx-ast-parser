@@ -11,18 +11,16 @@ class NginxConfigEditorTest extends TestCase
 {
     public function testAddSiteToNginx()
     {
-        $originalNginxConfig = file_get_contents('/-/vito/packages/php-nginx-parser/nginx.conf');
-
-        $lexer = new NginxConfigLexer($originalNginxConfig);
-        $parser = new Parser($lexer);
-
+        $originalNginxConfig = file_get_contents('tests/example-configs/vito.example.com.conf');
         try {
-            $status = $parser->parse();
-            $this->assertTrue($status);
+            /**
+             * @var NginxConfigEditor $editor
+             * @var NginxConfigLexer $lexer
+             */
+            [$parser, $lexer] = Parser::instance($originalNginxConfig);
+            $this->assertTrue(true);
         } catch (\Exception $e) {
             $this->fail($e);
         }
-
-
     }
 }

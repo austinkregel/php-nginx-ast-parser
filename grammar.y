@@ -118,6 +118,7 @@ main:
 | worker_processes
 | pid
 | events
+| %empty
 ;
 
 servers:
@@ -131,6 +132,7 @@ events:
 event_body_list:
   worker_connections
 | multi_accept
+| %empty
 ;
 server_body:
   T_SERVER_NAME server_name_values ';'  { $$ = new Node('T_SERVER_NAME', ['names' => $2]); }
